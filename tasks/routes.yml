@@ -1,0 +1,34 @@
+---
+- name: Set up public subnet route table
+  ec2_vpc_route_table:
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    tags:
+      Name: cdvr-public-route-table
+    subnets:
+      - "{{ subnet_az0_id }}"
+      - "{{ subnet_az1_id }}"
+      - "{{ subnet_az2_id }}"
+    routes:
+      - dest: 0.0.0.0/0
+        gateway_id: "{{ igw_gateway_id }}"
+  register: public_route_table
+
+- name: Timeout between route table creation
+  wait_for: timeout=30
+  delegate_to: localhost
+
+- name: Set up NAT-protected route table
+  ec2_vpc_route_table:
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    tags:
+      Name: cdvr-private-route-table
+    subnets:
+      - "{{ subnet_az3_id }}"
+      - "{{ subnet_az4_id }}"
+      - "{{ subnet_az5_id }}"
+    routes:
+      - dest: 0.0.0.0/0
+        gateway_id: "{{ nat_gateway_id }}"
+  register: nat_route_table

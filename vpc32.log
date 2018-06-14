@@ -1,0 +1,172 @@
+ [WARNING]: Unable to parse /etc/ansible/hosts as an inventory source
+ [WARNING]: No inventory was parsed, only implicit localhost is available
+ [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [localhost] ****************************************************************************************************************************************************************
+
+TASK [Loading variables for cdvr vpc creataion] *********************************************************************************************************************************
+ok: [localhost]
+
+TASK [Create a VPC] *************************************************************************************************************************************************************
+changed: [localhost]
+
+TASK [Timeout for VPC creation] *************************************************************************************************************************************************
+ok: [localhost -> localhost]
+
+TASK [debug] ********************************************************************************************************************************************************************
+ok: [localhost] => {
+    "msg": "vpc-f4bda88d"
+}
+
+TASK [Setting VPCID variable] ***************************************************************************************************************************************************
+ok: [localhost]
+
+TASK [Update VPC NAME in yaml file] *********************************************************************************************************************************************
+changed: [localhost]
+
+TASK [Reloading variables for subnet creation] **********************************************************************************************************************************
+ok: [localhost]
+
+TASK [Create subnets for us-west-2a] ********************************************************************************************************************************************
+changed: [localhost] => (item={u'sub': {u'sub_cidr': u'10.16.0.0/24', u'sub_name': u'cdvr3-zone-a-public-0'}})
+
+TASK [Timeout between subnet creation] ******************************************************************************************************************************************
+ok: [localhost -> localhost]
+
+TASK [Create subnets for us-west-2b] ********************************************************************************************************************************************
+changed: [localhost] => (item={u'sub': {u'sub_cidr': u'10.16.1.0/24', u'sub_name': u'cdvr3-zone-b-public-1'}})
+
+TASK [Timeout between subnet creation] ******************************************************************************************************************************************
+ok: [localhost -> localhost]
+
+TASK [Create subnets for us-west-2c] ********************************************************************************************************************************************
+changed: [localhost] => (item={u'sub': {u'sub_cidr': u'10.16.2.0/24', u'sub_name': u'cdvr3-zone-c-public-2'}})
+
+TASK [Timeout between subnet creation] ******************************************************************************************************************************************
+ok: [localhost -> localhost]
+
+TASK [Setting up internet gateway] **********************************************************************************************************************************************
+changed: [localhost]
+
+TASK [Timeout between IGW creation] *********************************************************************************************************************************************
+ok: [localhost -> localhost]
+
+TASK [debug] ********************************************************************************************************************************************************************
+ok: [localhost] => {
+    "msg": "igw-a12b7ec7"
+}
+
+TASK [Setting gateway_id variable] **********************************************************************************************************************************************
+ok: [localhost]
+
+TASK [Set the name tag of the Internet Gateway] *********************************************************************************************************************************
+changed: [localhost]
+
+TASK [Update Gateway ID in yaml file] *******************************************************************************************************************************************
+changed: [localhost]
+
+TASK [Create subnets for us-west-2a] ********************************************************************************************************************************************
+changed: [localhost] => (item={u'sub': {u'sub_cidr': u'10.16.3.0/24', u'sub_name': u'cdvr3-zone-a-private-3'}})
+
+TASK [Timeout between subnet creation] ******************************************************************************************************************************************
+ok: [localhost -> localhost]
+
+TASK [Create subnets for us-west-2b] ********************************************************************************************************************************************
+changed: [localhost] => (item={u'sub': {u'sub_cidr': u'10.16.4.0/24', u'sub_name': u'cdvr3-zone-b-private-4'}})
+
+TASK [Timeout between subnet creation] ******************************************************************************************************************************************
+ok: [localhost -> localhost]
+
+TASK [Create subnets for us-west-2c] ********************************************************************************************************************************************
+changed: [localhost] => (item={u'sub': {u'sub_cidr': u'10.16.5.0/24', u'sub_name': u'cdvr3-zone-c-private-5'}})
+
+TASK [Timeout between subnet creation] ******************************************************************************************************************************************
+ok: [localhost -> localhost]
+
+TASK [debug] ********************************************************************************************************************************************************************
+ok: [localhost] => {
+    "msg": {
+        "changed": true, 
+        "msg": "All items completed", 
+        "results": [
+            {
+                "_ansible_ignore_errors": null, 
+                "_ansible_item_result": true, 
+                "_ansible_no_log": false, 
+                "_ansible_parsed": true, 
+                "changed": true, 
+                "failed": false, 
+                "invocation": {
+                    "module_args": {
+                        "assign_instances_ipv6": false, 
+                        "aws_access_key": null, 
+                        "aws_secret_key": null, 
+                        "az": "us-west-2a", 
+                        "cidr": "10.16.0.0/24", 
+                        "ec2_url": null, 
+                        "ipv6_cidr": "", 
+                        "map_public": false, 
+                        "profile": null, 
+                        "purge_tags": true, 
+                        "region": "us-west-2", 
+                        "resource_tags": {
+                            "Name": "cdvr3-zone-a-public-0", 
+                            "VPCname": "test3-vpc"
+                        }, 
+                        "security_token": null, 
+                        "state": "present", 
+                        "tags": {
+                            "Name": "cdvr3-zone-a-public-0", 
+                            "VPCname": "test3-vpc"
+                        }, 
+                        "validate_certs": true, 
+                        "vpc_id": "vpc-f4bda88d", 
+                        "wait": true, 
+                        "wait_timeout": 300
+                    }
+                }, 
+                "item": {
+                    "sub": {
+                        "sub_cidr": "10.16.0.0/24", 
+                        "sub_name": "cdvr3-zone-a-public-0"
+                    }
+                }, 
+                "subnet": {
+                    "assign_ipv6_address_on_creation": false, 
+                    "availability_zone": "us-west-2a", 
+                    "available_ip_address_count": 251, 
+                    "cidr_block": "10.16.0.0/24", 
+                    "default_for_az": false, 
+                    "id": "subnet-9073fbdb", 
+                    "ipv6_association_id": "", 
+                    "ipv6_cidr_block": "", 
+                    "ipv6_cidr_block_association_set": [], 
+                    "map_public_ip_on_launch": false, 
+                    "state": "available", 
+                    "tags": {
+                        "Name": "cdvr3-zone-a-public-0", 
+                        "VPCname": "test3-vpc"
+                    }, 
+                    "vpc_id": "vpc-f4bda88d"
+                }
+            }
+        ]
+    }
+}
+
+TASK [Create DMZ subnet list] ***************************************************************************************************************************************************
+ok: [localhost]
+
+TASK [Get Private Subnets] ******************************************************************************************************************************************************
+ok: [localhost]
+
+TASK [Create Public Subnets list] ***********************************************************************************************************************************************
+ok: [localhost]
+
+TASK [Get Public Subnets] *******************************************************************************************************************************************************
+ok: [localhost]
+
+TASK [Create a new NAT Gateway] *************************************************************************************************************************************************
+changed: [localhost] => (item=subnet-9073fbdb)
+
+TASK [Timeout between NAT creation] *********************************************************************************************************************************************

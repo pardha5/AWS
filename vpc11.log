@@ -1,0 +1,272 @@
+ [WARNING]: Unable to parse /etc/ansible/hosts as an inventory source
+ [WARNING]: No inventory was parsed, only implicit localhost is available
+ [WARNING]: provided hosts list is empty, only localhost is available. Note
+that the implicit localhost does not match 'all'
+
+PLAY [localhost] ***************************************************************
+
+TASK [Loading variables for cdvr vpc creataion] ********************************
+ok: [localhost]
+
+TASK [Create a VPC] ************************************************************
+changed: [localhost]
+
+TASK [Timeout for VPC creation] ************************************************
+ok: [localhost -> localhost]
+
+TASK [debug] *******************************************************************
+ok: [localhost] => {
+    "msg": "vpc-8cb3a6f5"
+}
+
+TASK [Setting VPCID variable] **************************************************
+ok: [localhost]
+
+TASK [Update VPC NAME in yaml file] ********************************************
+changed: [localhost]
+
+TASK [Reloading variables for subnet creation] *********************************
+ok: [localhost]
+
+TASK [Create subnets for us-west-2a] *******************************************
+changed: [localhost] => (item={u'sub': {u'sub_cidr': u'192.168.0.0/24', u'sub_name': u'cdvr-zone-a-public-0'}})
+
+TASK [Timeout between subnet creation] *****************************************
+ok: [localhost -> localhost]
+
+TASK [Create subnets for us-west-2b] *******************************************
+changed: [localhost] => (item={u'sub': {u'sub_cidr': u'192.168.1.0/24', u'sub_name': u'cdvr-zone-b-public-1'}})
+
+TASK [Timeout between subnet creation] *****************************************
+ok: [localhost -> localhost]
+
+TASK [Create subnets for us-west-2c] *******************************************
+changed: [localhost] => (item={u'sub': {u'sub_cidr': u'192.168.2.0/24', u'sub_name': u'cdvr-zone-c-public-2'}})
+
+TASK [Timeout between subnet creation] *****************************************
+ok: [localhost -> localhost]
+
+TASK [Setting up internet gateway] *********************************************
+changed: [localhost]
+
+TASK [Timeout between IGW creation] ********************************************
+ok: [localhost -> localhost]
+
+TASK [debug] *******************************************************************
+ok: [localhost] => {
+    "msg": "igw-512e7b37"
+}
+
+TASK [Setting gateway_id variable] *********************************************
+ok: [localhost]
+
+TASK [Set the name tag of the Internet Gateway] ********************************
+changed: [localhost]
+
+TASK [Update Gateway ID in yaml file] ******************************************
+changed: [localhost]
+
+TASK [Create subnets for us-west-2a] *******************************************
+changed: [localhost] => (item={u'sub': {u'sub_cidr': u'192.168.3.0/24', u'sub_name': u'cdvr-zone-a-private-3'}})
+
+TASK [Timeout between subnet creation] *****************************************
+ok: [localhost -> localhost]
+
+TASK [Create subnets for us-west-2b] *******************************************
+changed: [localhost] => (item={u'sub': {u'sub_cidr': u'192.168.4.0/24', u'sub_name': u'cdvr-zone-b-private-4'}})
+
+TASK [Timeout between subnet creation] *****************************************
+ok: [localhost -> localhost]
+
+TASK [Create subnets for us-west-2c] *******************************************
+changed: [localhost] => (item={u'sub': {u'sub_cidr': u'192.168.5.0/24', u'sub_name': u'cdvr-zone-c-private-5'}})
+
+TASK [Timeout between subnet creation] *****************************************
+ok: [localhost -> localhost]
+
+TASK [debug] *******************************************************************
+ok: [localhost] => {
+    "msg": {
+        "changed": true, 
+        "msg": "All items completed", 
+        "results": [
+            {
+                "_ansible_ignore_errors": null, 
+                "_ansible_item_result": true, 
+                "_ansible_no_log": false, 
+                "_ansible_parsed": true, 
+                "changed": true, 
+                "failed": false, 
+                "invocation": {
+                    "module_args": {
+                        "assign_instances_ipv6": false, 
+                        "aws_access_key": null, 
+                        "aws_secret_key": null, 
+                        "az": "us-west-2a", 
+                        "cidr": "192.168.0.0/24", 
+                        "ec2_url": null, 
+                        "ipv6_cidr": "", 
+                        "map_public": false, 
+                        "profile": null, 
+                        "purge_tags": true, 
+                        "region": "us-west-2", 
+                        "resource_tags": {
+                            "Name": "cdvr-zone-a-public-0", 
+                            "VPCname": "test1-vpc"
+                        }, 
+                        "security_token": null, 
+                        "state": "present", 
+                        "tags": {
+                            "Name": "cdvr-zone-a-public-0", 
+                            "VPCname": "test1-vpc"
+                        }, 
+                        "validate_certs": true, 
+                        "vpc_id": "vpc-8cb3a6f5", 
+                        "wait": true, 
+                        "wait_timeout": 300
+                    }
+                }, 
+                "item": {
+                    "sub": {
+                        "sub_cidr": "192.168.0.0/24", 
+                        "sub_name": "cdvr-zone-a-public-0"
+                    }
+                }, 
+                "subnet": {
+                    "assign_ipv6_address_on_creation": false, 
+                    "availability_zone": "us-west-2a", 
+                    "available_ip_address_count": 251, 
+                    "cidr_block": "192.168.0.0/24", 
+                    "default_for_az": false, 
+                    "id": "subnet-6e74fc25", 
+                    "ipv6_association_id": "", 
+                    "ipv6_cidr_block": "", 
+                    "ipv6_cidr_block_association_set": [], 
+                    "map_public_ip_on_launch": false, 
+                    "state": "available", 
+                    "tags": {
+                        "Name": "cdvr-zone-a-public-0", 
+                        "VPCname": "test1-vpc"
+                    }, 
+                    "vpc_id": "vpc-8cb3a6f5"
+                }
+            }
+        ]
+    }
+}
+
+TASK [Create DMZ subnet list] **************************************************
+ok: [localhost]
+
+TASK [Get Private Subnets] *****************************************************
+ok: [localhost]
+
+TASK [Create Public Subnets list] **********************************************
+ok: [localhost]
+
+TASK [Get Public Subnets] ******************************************************
+ok: [localhost]
+
+TASK [Create a new NAT Gateway] ************************************************
+changed: [localhost] => (item=subnet-6e74fc25)
+
+TASK [Timeout between NAT creation] ********************************************
+ok: [localhost -> localhost]
+
+TASK [Set the name tag of the NAT Gateway] *************************************
+changed: [localhost] => (item={'_ansible_parsed': True, u'changed': True, u'nat_gateway_id': u'nat-0e5ff677a28e6f4c2', '_ansible_no_log': False, u'success': True, 'item': u'subnet-6e74fc25', u'subnet_id': u'subnet-6e74fc25', u'nat_gateway_addresses': [{u'public_ip': u'35.167.122.11', u'network_interface_id': u'eni-cc609d30', u'private_ip': u'192.168.0.183', u'allocation_id': u'eipalloc-f63a78ca'}], '_ansible_item_result': True, 'failed': False, u'state': u'available', u'create_time': u'2018-06-14T18:57:32+00:00', u'invocation': {u'module_args': {u'profile': None, u'aws_secret_key': None, u'aws_access_key': None, u'client_token': None, u'nat_gateway_id': None, u'security_token': None, u'allocation_id': None, u'eip_address': None, u'region': u'us-west-2', u'if_exist_do_not_create': True, u'subnet_id': u'subnet-6e74fc25', u'state': u'present', u'wait_timeout': 320, u'ec2_url': None, u'release_eip': False, u'validate_certs': True, u'wait': True}}, u'vpc_id': u'vpc-8cb3a6f5', '_ansible_ignore_errors': None, u'msg': u'NAT gateway nat-0e5ff677a28e6f4c2 created'})
+
+TASK [debug] *******************************************************************
+ok: [localhost] => {
+    "msg": {
+        "changed": true, 
+        "msg": "All items completed", 
+        "results": [
+            {
+                "_ansible_ignore_errors": null, 
+                "_ansible_item_result": true, 
+                "_ansible_no_log": false, 
+                "_ansible_parsed": true, 
+                "changed": true, 
+                "create_time": "2018-06-14T18:57:32+00:00", 
+                "failed": false, 
+                "invocation": {
+                    "module_args": {
+                        "allocation_id": null, 
+                        "aws_access_key": null, 
+                        "aws_secret_key": null, 
+                        "client_token": null, 
+                        "ec2_url": null, 
+                        "eip_address": null, 
+                        "if_exist_do_not_create": true, 
+                        "nat_gateway_id": null, 
+                        "profile": null, 
+                        "region": "us-west-2", 
+                        "release_eip": false, 
+                        "security_token": null, 
+                        "state": "present", 
+                        "subnet_id": "subnet-6e74fc25", 
+                        "validate_certs": true, 
+                        "wait": true, 
+                        "wait_timeout": 320
+                    }
+                }, 
+                "item": "subnet-6e74fc25", 
+                "msg": "NAT gateway nat-0e5ff677a28e6f4c2 created", 
+                "nat_gateway_addresses": [
+                    {
+                        "allocation_id": "eipalloc-f63a78ca", 
+                        "network_interface_id": "eni-cc609d30", 
+                        "private_ip": "192.168.0.183", 
+                        "public_ip": "35.167.122.11"
+                    }
+                ], 
+                "nat_gateway_id": "nat-0e5ff677a28e6f4c2", 
+                "state": "available", 
+                "subnet_id": "subnet-6e74fc25", 
+                "success": true, 
+                "vpc_id": "vpc-8cb3a6f5"
+            }
+        ]
+    }
+}
+
+TASK [Setting nat_gateway_id variable] *****************************************
+ok: [localhost] => (item={'_ansible_parsed': True, u'changed': True, u'nat_gateway_id': u'nat-0e5ff677a28e6f4c2', '_ansible_no_log': False, u'success': True, 'item': u'subnet-6e74fc25', u'subnet_id': u'subnet-6e74fc25', u'nat_gateway_addresses': [{u'public_ip': u'35.167.122.11', u'network_interface_id': u'eni-cc609d30', u'private_ip': u'192.168.0.183', u'allocation_id': u'eipalloc-f63a78ca'}], '_ansible_item_result': True, 'failed': False, u'state': u'available', u'create_time': u'2018-06-14T18:57:32+00:00', u'invocation': {u'module_args': {u'profile': None, u'aws_secret_key': None, u'aws_access_key': None, u'client_token': None, u'nat_gateway_id': None, u'security_token': None, u'allocation_id': None, u'eip_address': None, u'region': u'us-west-2', u'if_exist_do_not_create': True, u'subnet_id': u'subnet-6e74fc25', u'state': u'present', u'wait_timeout': 320, u'ec2_url': None, u'release_eip': False, u'validate_certs': True, u'wait': True}}, u'vpc_id': u'vpc-8cb3a6f5', '_ansible_ignore_errors': None, u'msg': u'NAT gateway nat-0e5ff677a28e6f4c2 created'})
+
+TASK [Update Gateway ID in yaml file] ******************************************
+changed: [localhost]
+
+TASK [Update cdvr-zone-a-public-0 yaml file] ***********************************
+changed: [localhost]
+
+TASK [Update cdvr-zone-a-public-1 yaml file] ***********************************
+changed: [localhost]
+
+TASK [Update cdvr-zone-a-public-2 yaml file] ***********************************
+changed: [localhost]
+
+TASK [Update cdvr-zone-a-private-3 yaml file] **********************************
+changed: [localhost]
+
+TASK [Update cdvr-zone-a-private-4 yaml file] **********************************
+changed: [localhost]
+
+TASK [Update cdvr-zone-a-private-5 yaml file] **********************************
+changed: [localhost]
+
+TASK [Reloading variables for route creation] **********************************
+ok: [localhost]
+
+TASK [Set up public subnet route table] ****************************************
+changed: [localhost]
+
+TASK [Timeout between route table creation] ************************************
+ok: [localhost -> localhost]
+
+TASK [Set up NAT-protected route table] ****************************************
+changed: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=46   changed=22   unreachable=0    failed=0   
+

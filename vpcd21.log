@@ -1,0 +1,56 @@
+Deleting VPC with name test2-vpc and VPCID vpc-4eb3a637
+**********************************
+REMOVE NAT GATEWAY
+**********************************
+{
+    "NatGatewayId": "nat-0088203bb18c7a742"
+}
+Waiting for nat-0088203bb18c7a742 to terminate..
+Waiting for nat-0088203bb18c7a742 to terminate..
+**********************************
+Remove Internet gateway from VPC
+**********************************
+
+An error occurred (InvalidInternetGatewayID.NotFound) when calling the DescribeInternetGateways operation: The internetGateway ID 'igw-372b7e51' does not exist
+**********************************
+Remove Subnets from VPC
+**********************************
+*********************************
+REMOVING subnet-d86d03a1 FROM  vpc-4eb3a637
+*********************************
+*********************************
+REMOVING subnet-445a1e1e FROM  vpc-4eb3a637
+*********************************
+*********************************
+REMOVING subnet-d877ff93 FROM  vpc-4eb3a637
+*********************************
+*********************************
+REMOVING subnet-a16907d8 FROM  vpc-4eb3a637
+*********************************
+*********************************
+REMOVING subnet-0c581c56 FROM  vpc-4eb3a637
+*********************************
+*********************************
+REMOVING subnet-fd75fdb6 FROM  vpc-4eb3a637
+*********************************
+**********************************
+Removing Routing tables
+**********************************
+*********************************
+Checking for ROUTE TABLE  IN vpc-4eb3a637
+*********************************
+*********************************
+Checking for ROUTE TABLE  IN vpc-4eb3a637
+*********************************
+
+An error occurred (InvalidRoute.NotFound) when calling the DeleteRoute operation: no route with destination-cidr-block 0.0.0.0/0 in route table rtb-99e106e2
+
+An error occurred (DependencyViolation) when calling the DeleteRouteTable operation: The routeTable 'rtb-99e106e2' has dependencies and cannot be deleted.
+*********************************
+Checking for ROUTE TABLE  IN vpc-4eb3a637
+*********************************
+removing unused Elastic IPS
+releasing eipalloc-4d3a7871
+**********************************
+DELETING VPC:vpc-4eb3a637
+**********************************

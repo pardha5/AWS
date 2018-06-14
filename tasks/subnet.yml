@@ -1,0 +1,236 @@
+---
+- name: Create subnets for {{ AZ1 }}
+  when: (AZ1Sub == true)
+  ec2_vpc_subnet:
+    state: present
+    az: "{{ AZ1 }}"
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    cidr: "{{ item.sub.sub_cidr }}"
+    resource_tags:
+      Name: "{{ item.sub.sub_name }}"
+      VPCname: "{{ vpc_name }}"
+  with_items: "{{ az1_sub_list }}"
+  register: subnetAZ1
+
+- name: Timeout between subnet creation
+  wait_for: timeout=15
+  delegate_to: localhost
+
+- name: Create subnets for {{ AZ2 }}
+  when: ( AZ2Sub == true)
+  ec2_vpc_subnet:
+    state: present
+    az: "{{ AZ2 }}"
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    cidr: "{{ item.sub.sub_cidr }}"
+    resource_tags:
+      Name: "{{ item.sub.sub_name }}"
+      VPCname: "{{ vpc_name }}"
+  with_items: "{{ az2_sub_list }}"
+  register: subnetAZ2
+
+- name: Timeout between subnet creation
+  wait_for: timeout=15
+  delegate_to: localhost
+
+- name: Create subnets for {{ AZ3 }}
+  when: ( AZ3Sub == true)
+  ec2_vpc_subnet:
+    state: present
+    az: "{{ AZ3 }}"
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    cidr: "{{ item.sub.sub_cidr }}"
+    resource_tags:
+      Name: "{{ item.sub.sub_name }}"
+      VPCname: "{{ vpc_name }}"
+  with_items: "{{ az3_sub_list }}"
+  register: subnetAZ3
+
+- name: Timeout between subnet creation
+  wait_for: timeout=15
+  delegate_to: localhost
+
+- name: Setting up internet gateway
+  ec2_vpc_igw:
+    vpc_id: "{{ vpc_id }}"
+    state: present
+  register: igw
+
+- name: Timeout between IGW creation
+  wait_for: timeout=60
+  delegate_to: localhost
+
+- debug:
+    msg: "{{ igw.gateway_id }}"
+
+- name: Setting gateway_id variable
+  set_fact:
+    gateway_id: "{{ igw.gateway_id }}"
+
+- name: Set the name tag of the Internet Gateway
+  ec2_tag:
+    region:  "{{ vpc_region }}"
+    resource: "{{ igw.gateway_id }}"
+    tags:
+      Name: "cdvr-{{vpc_name}}-igw"
+      VPCname: "{{ vpc_name }}"
+
+- name: "Update Gateway ID in yaml file"
+  lineinfile:
+    path: /root/aws_t/cdvr_infra/{{ vpc_vars }}
+    regexp: '(igw_gateway_id: defaut-igw-gateway-id)'
+    line: 'igw_gateway_id: {{ gateway_id }}'
+
+- name: Create subnets for {{ AZ4 }}
+  when: ( AZ4Sub == true)
+  ec2_vpc_subnet:
+    state: present
+    az: "{{ AZ4 }}"
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    cidr: "{{ item.sub.sub_cidr }}"
+    resource_tags:
+      Name: "{{ item.sub.sub_name }}"
+      VPCname: "{{ vpc_name }}"
+  with_items: "{{ az4_sub_list }}"
+  register: subnetAZ4
+
+- name: Timeout between subnet creation
+  wait_for: timeout=15
+  delegate_to: localhost
+
+- name: Create subnets for {{ AZ5 }}
+  when: ( AZ5Sub == true)
+  ec2_vpc_subnet:
+    state: present
+    az: "{{ AZ5 }}"
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    cidr: "{{ item.sub.sub_cidr }}"
+    resource_tags:
+      Name: "{{ item.sub.sub_name }}"
+      VPCname: "{{ vpc_name }}"
+  with_items: "{{ az5_sub_list }}"
+  register: subnetAZ5
+
+- name: Timeout between subnet creation
+  wait_for: timeout=15
+  delegate_to: localhost
+
+- name: Create subnets for {{ AZ6 }}
+  when: ( AZ6Sub == true)
+  ec2_vpc_subnet:
+    state: present
+    az: "{{ AZ6 }}"
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    cidr: "{{ item.sub.sub_cidr }}"
+    resource_tags:
+      Name: "{{ item.sub.sub_name }}"
+      VPCname: "{{ vpc_name }}"
+  with_items: "{{ az6_sub_list }}"
+  register: subnetAZ6
+
+- name: Timeout between subnet creation
+  wait_for: timeout=15
+  delegate_to: localhost
+
+- debug:
+    msg: "{{ subnetAZ1 }}"
+
+- name: Create DMZ subnet list
+  set_fact: private_subnets=[]
+
+- name: Get Private Subnets
+  set_fact:
+    private_subnets:
+      - - "{{ subnetAZ3.results[0].subnet.id }}"
+        - "{{ subnetAZ4.results[0].subnet.id }}"
+        - "{{ subnetAZ5.results[0].subnet.id }}"
+
+- name: Create Public Subnets list
+  set_fact: public_subnets=[]
+
+- name: Get Public Subnets
+  set_fact:
+     public_subnets:
+       - "{{ subnetAZ1.results[0].subnet.id }}"
+       - "{{ subnetAZ2.results[0].subnet.id }}"
+       - "{{ subnetAZ3.results[0].subnet.id }}"
+
+- name: Create a new NAT Gateway
+  ec2_vpc_nat_gateway:
+    wait: yes
+    state: present
+    subnet_id: "{{ item }}"
+    region: "{{ vpc_region }}"
+    if_exist_do_not_create: true
+  with_items: "{{ subnetAZ1.results[0].subnet.id }}"
+  register: ngw
+
+- name: Timeout between NAT creation
+  wait_for: timeout=60
+  delegate_to: localhost
+
+- name: Set the name tag of the NAT Gateway
+  ec2_tag:
+    region:  "{{ vpc_region }}"
+    resource: "{{item.nat_gateway_id}}"
+    tags:
+      Name: "cdvr-{{vpc_name}}-nat"
+      VPCname: "{{ vpc_name }}"
+  with_items: "{{ngw.results}}"
+
+- debug:
+    msg: "{{ ngw }}"
+
+- name: Setting nat_gateway_id variable
+  set_fact:
+    nat_id: "{{ item.nat_gateway_id }}"
+  with_items: "{{ngw.results}}"
+
+- name: "Update Gateway ID in yaml file"
+  lineinfile:
+    path: /root/aws_t/cdvr_infra/{{ vpc_vars }}
+    regexp: '(nat_gateway_id: defaut-nat-gateway-id)'
+    line: 'nat_gateway_id: {{ nat_id }}'
+
+- name: "Update cdvr-zone-a-public-0 yaml file"
+  lineinfile:
+    path: /root/aws_t/cdvr_infra/{{ vpc_vars }}
+    regexp: '(subnet_az0_id: default-subnet-az0-id)'
+    line: 'subnet_az0_id: {{ subnetAZ1.results[0].subnet.id }}'
+
+- name: "Update cdvr-zone-a-public-1 yaml file"
+  lineinfile:
+    path: /root/aws_t/cdvr_infra/{{ vpc_vars }}
+    regexp: '(subnet_az1_id: default-subnet-az1-id)'
+    line: 'subnet_az1_id: {{ subnetAZ2.results[0].subnet.id }}'
+
+- name: "Update cdvr-zone-a-public-2 yaml file"
+  lineinfile:
+    path: /root/aws_t/cdvr_infra/{{ vpc_vars }}
+    regexp: '(subnet_az2_id: default-subnet-az2-id)'
+    line: 'subnet_az2_id: {{ subnetAZ3.results[0].subnet.id }}'
+
+
+- name: "Update cdvr-zone-a-private-3 yaml file"
+  lineinfile:
+    path: /root/aws_t/cdvr_infra/{{ vpc_vars }}
+    regexp: '(subnet_az3_id: default-subnet-az3-id)'
+    line: 'subnet_az3_id: {{ subnetAZ4.results[0].subnet.id }}'
+
+- name: "Update cdvr-zone-a-private-4 yaml file"
+  lineinfile:
+    path: /root/aws_t/cdvr_infra/{{ vpc_vars }}
+    regexp: '(subnet_az4_id: default-subnet-az4-id)'
+    line: 'subnet_az4_id: {{ subnetAZ5.results[0].subnet.id }}'
+
+- name: "Update cdvr-zone-a-private-5 yaml file"
+  lineinfile:
+    path: /root/aws_t/cdvr_infra/{{ vpc_vars }}
+    regexp: '(subnet_az5_id: default-subnet-az5-id)'
+    line: 'subnet_az5_id: {{ subnetAZ6.results[0].subnet.id }}'

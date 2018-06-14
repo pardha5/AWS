@@ -1,0 +1,1 @@
+./vpc_create.sh: line 14: ansible-playbook: command not found

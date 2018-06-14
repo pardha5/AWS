@@ -1,0 +1,17 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: Loading variables for cdvr vpc creataion
+      include_vars:
+        file: vpc_vars2.yml
+    - include: tasks/vpc.yml
+    - name: Reloading variables for subnet creation
+      include_vars:
+        file: vpc_vars2.yml
+    - include: tasks/subnet.yml
+    - name: Reloading variables for route creation
+      include_vars:
+        file: vpc_vars2.yml
+    - include: tasks/routes.yml

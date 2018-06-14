@@ -1,0 +1,28 @@
+- name: Create a VPC
+  ec2_vpc_net:
+    region: "{{ vpc_region }}"
+    name: "{{ vpc_name }}"
+    cidr_block: "{{ vpc_cidr_block }}"
+    state: present
+  register: vpc
+
+- name: Timeout for VPC creation
+  wait_for: timeout=30
+  delegate_to: localhost
+  
+- debug:
+    msg: "{{ vpc.vpc.id }}"
+
+- name: Setting VPCID variable
+  set_fact:
+    vpc_id: "{{ vpc.vpc.id }}"
+
+#- name: "Update cdvr_variables file with VPC NAME"
+#  shell: sed -i "s/export AWS_VPC_ID=.*/export AWS_VPC_ID={{ vpc_id }}/g"  /root/cdvr_variables
+
+- name: "Update VPC NAME in yaml file"
+  lineinfile:
+    #path: /root/aws_t/cdvr_infra/vpc_vars1.yml
+    path: /root/aws_t/cdvr_infra/{{ vpc_vars }}
+    regexp: '(vpc_id: default-vpc-id)'
+    line: 'vpc_id: {{ vpc_id }}'

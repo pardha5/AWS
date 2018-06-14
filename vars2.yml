@@ -1,0 +1,62 @@
+---
+# VPC Variables
+vpc_name: "test2-vpc"
+vpc_region: "us-west-2"
+vpc_cidr_block: "172.168.0.0/21"
+vpc_id: default-vpc-id
+igw_gateway_id: defaut-igw-gateway-id
+nat_gateway_id: defaut-nat-gateway-id
+vpc_vars: "vpc_vars2.yml"
+
+# ---
+# Subnets Variables
+AZ1Sub: true
+AZ2Sub: true
+AZ3Sub: true
+AZ4Sub: true
+AZ5Sub: true
+AZ6Sub: true
+
+AZ1: "us-west-2a"
+AZ2: "us-west-2b"
+AZ3: "us-west-2c"
+AZ4: "us-west-2a"
+AZ5: "us-west-2b"
+AZ6: "us-west-2c"
+
+subnet_az0_id: default-subnet-az0-id
+subnet_az1_id: default-subnet-az1-id
+subnet_az2_id: default-subnet-az2-id
+subnet_az3_id: default-subnet-az3-id
+subnet_az4_id: default-subnet-az4-id
+subnet_az5_id: default-subnet-az5-id
+
+az1_sub_list:
+  - sub:
+      sub_name: "cdvr2-zone-a-public-0"
+      sub_cidr: "172.168.0.0/24"
+
+az2_sub_list:
+  - sub:
+      sub_name: "cdvr2-zone-b-public-1"
+      sub_cidr: "172.168.1.0/24"
+
+az3_sub_list:
+  - sub:
+      sub_name: "cdvr2-zone-c-public-2"
+      sub_cidr: "172.168.2.0/24"
+
+az4_sub_list:
+  - sub:
+      sub_name: "cdvr2-zone-a-private-3"
+      sub_cidr: "172.168.3.0/24"
+
+az5_sub_list:
+  - sub:
+      sub_name: "cdvr2-zone-b-private-4"
+      sub_cidr: "172.168.4.0/24"
+
+az6_sub_list:
+  - sub:
+      sub_name: "cdvr2-zone-c-private-5"
+      sub_cidr: "172.168.5.0/24"

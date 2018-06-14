@@ -1,0 +1,24 @@
+Deleting VPC with name test2-vpc and VPCID 
+**********************************
+REMOVE NAT GATEWAY
+**********************************
+**********************************
+Remove Internet gateway from VPC
+**********************************
+**********************************
+Remove Subnets from VPC
+**********************************
+**********************************
+Removing Routing tables
+**********************************
+removing unused Elastic IPS
+**********************************
+DELETING VPC:
+**********************************
+usage: aws [options] <command> <subcommand> [<subcommand> ...] [parameters]
+To see help text, you can run:
+
+  aws help
+  aws <command> help
+  aws <command> <subcommand> help
+aws: error: argument --vpc-id: expected one argument

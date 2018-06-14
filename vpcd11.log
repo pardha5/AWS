@@ -1,0 +1,56 @@
+Deleting VPC with name test1-vpc and VPCID vpc-8cb3a6f5
+**********************************
+REMOVE NAT GATEWAY
+**********************************
+{
+    "NatGatewayId": "nat-0e5ff677a28e6f4c2"
+}
+Waiting for nat-0e5ff677a28e6f4c2 to terminate..
+**********************************
+Remove Internet gateway from VPC
+**********************************
+
+An error occurred (InvalidInternetGatewayID.NotFound) when calling the DescribeInternetGateways operation: The internetGateway ID 'igw-512e7b37' does not exist
+**********************************
+Remove Subnets from VPC
+**********************************
+*********************************
+REMOVING subnet-3a76fe71 FROM  vpc-8cb3a6f5
+*********************************
+*********************************
+REMOVING subnet-db6d03a2 FROM  vpc-8cb3a6f5
+*********************************
+*********************************
+REMOVING subnet-c85f1b92 FROM  vpc-8cb3a6f5
+*********************************
+*********************************
+REMOVING subnet-6e74fc25 FROM  vpc-8cb3a6f5
+*********************************
+*********************************
+REMOVING subnet-fc6b0585 FROM  vpc-8cb3a6f5
+*********************************
+*********************************
+REMOVING subnet-455a1e1f FROM  vpc-8cb3a6f5
+*********************************
+**********************************
+Removing Routing tables
+**********************************
+*********************************
+Checking for ROUTE TABLE  IN vpc-8cb3a6f5
+*********************************
+
+An error occurred (InvalidRoute.NotFound) when calling the DeleteRoute operation: no route with destination-cidr-block 0.0.0.0/0 in route table rtb-21e5025a
+
+An error occurred (DependencyViolation) when calling the DeleteRouteTable operation: The routeTable 'rtb-21e5025a' has dependencies and cannot be deleted.
+*********************************
+Checking for ROUTE TABLE  IN vpc-8cb3a6f5
+*********************************
+*********************************
+Checking for ROUTE TABLE  IN vpc-8cb3a6f5
+*********************************
+removing unused Elastic IPS
+releasing eipalloc-f63a78ca
+releasing eipalloc-ad347691
+**********************************
+DELETING VPC:vpc-8cb3a6f5
+**********************************
